@@ -6,6 +6,30 @@ import DropdownMenu from '@/components/ui/dropdown-menu/DropdownMenu.vue'
 import DropdownMenuTrigger from '@/components/ui/dropdown-menu/DropdownMenuTrigger.vue'
 import DropdownMenuContent from '@/components/ui/dropdown-menu/DropdownMenuContent.vue'
 import DropdownMenuItem from '@/components/ui/dropdown-menu/DropdownMenuItem.vue'
+
+import Dialog from '@/components/ui/dialog/Dialog.vue'
+import DialogTrigger from '@/components/ui/dialog/DialogTrigger.vue'
+import DialogContent from '@/components/ui/dialog/DialogContent.vue'
+import DialogHeader from '@/components/ui/dialog/DialogHeader.vue'
+import DialogTitle from '@/components/ui/dialog/DialogTitle.vue'
+import DialogDescription from '@/components/ui/dialog/DialogDescription.vue'
+import DialogFooter from '@/components/ui/dialog/DialogFooter.vue'
+import DialogClose from '@/components/ui/dialog/DialogClose.vue'
+
+import Input from '@/components/ui/input/Input.vue'
+import { ref } from 'vue'
+import { useNotesStore } from '@/stores/notes'
+
+const notesStore = useNotesStore()
+const newTitle = ref('')
+const newPreview = ref('')
+
+function handleCreate() {
+  if (!newTitle.value.trim()) return
+  notesStore.createNote({ title: newTitle.value, preview: newPreview.value })
+  newTitle.value = ''
+  newPreview.value = ''
+}
 </script>
 
 <template>
@@ -51,19 +75,50 @@ import DropdownMenuItem from '@/components/ui/dropdown-menu/DropdownMenuItem.vue
                 <DropdownMenuItem>Sign out</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            <Button size="sm">New Note</Button>
+
+            <!-- Global New Note dialog -->
+            <Dialog>
+              <DialogTrigger as-child>
+                <Button size="sm">New Note</Button>
+              </DialogTrigger>
+
+              <DialogContent class="sm:max-w-[480px]">
+                <DialogHeader>
+                  <DialogTitle>Create a new note</DialogTitle>
+                  <DialogDescription>Title and a short preview/summary.</DialogDescription>
+                </DialogHeader>
+
+                <div class="grid gap-3 py-2">
+                  <Input v-model="newTitle" placeholder="Title" class="h-9" />
+                  <textarea
+                    v-model="newPreview"
+                    placeholder="Preview"
+                    class="min-h-28 rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:border-ring/60"
+                  />
+                </div>
+
+                <DialogFooter class="gap-2">
+                  <DialogClose as-child>
+                    <Button variant="outline">Cancel</Button>
+                  </DialogClose>
+                  <DialogClose as-child>
+                    <Button @click="handleCreate">Create</Button>
+                  </DialogClose>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
         <Separator />
       </div>
     </header>
 
-    <!-- Main (flex-1 keeps footer at bottom) -->
+    <!-- Main -->
     <main class="container mx-auto px-4 py-6 flex-1">
       <RouterView />
     </main>
 
-    <!-- Footer (sticks to bottom) -->
+    <!-- Footer -->
     <footer class="border-t">
       <div class="container mx-auto px-4 py-6 text-sm text-muted-foreground">
         © {{ new Date().getFullYear() }} smart-notes
