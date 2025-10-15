@@ -1,15 +1,11 @@
-<template>
-  <div class="about">
-    <h1>This is an about page</h1>
-  </div>
-</template>
+<script setup lang="ts"></script>
 
-<style>
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-  }
-}
-</style>
+<template>
+  <section class="max-w-2xl space-y-2">
+    <h1 class="text-2xl font-semibold tracking-tight">About</h1>
+    <p class="text-sm text-muted-foreground">
+      Smart Notes is a lightweight note-taking app built with Vue 3, Vite, Tailwind, and shadcn.
+      Keep your ideas organized and accessible.
+    </p>
+  </section>
+</template>

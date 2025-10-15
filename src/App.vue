@@ -1,85 +1,73 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import Button from '@/components/ui/button/Button.vue'
+import Separator from '@/components/ui/separator/Separator.vue'
+import DropdownMenu from '@/components/ui/dropdown-menu/DropdownMenu.vue'
+import DropdownMenuTrigger from '@/components/ui/dropdown-menu/DropdownMenuTrigger.vue'
+import DropdownMenuContent from '@/components/ui/dropdown-menu/DropdownMenuContent.vue'
+import DropdownMenuItem from '@/components/ui/dropdown-menu/DropdownMenuItem.vue'
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  <div class="min-h-screen bg-background text-foreground flex flex-col">
+    <!-- Header -->
+    <header class="border-b bg-background/80 backdrop-blur">
+      <div class="container mx-auto px-4">
+        <div class="flex items-center justify-between py-3">
+          <!-- Brand -->
+          <RouterLink to="/" class="text-xl font-semibold tracking-tight hover:opacity-90">
+            smart-notes
+          </RouterLink>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+          <!-- Nav -->
+          <nav class="flex items-center gap-2">
+            <RouterLink
+              to="/"
+              class="px-3 py-1.5 rounded-md text-sm transition-colors text-muted-foreground hover:text-foreground"
+              active-class="bg-accent/60 text-foreground"
+              exact-active-class="bg-primary/10 text-primary font-semibold"
+            >
+              Home
+            </RouterLink>
+            <RouterLink
+              to="/about"
+              class="px-3 py-1.5 rounded-md text-sm transition-colors text-muted-foreground hover:text-foreground"
+              active-class="bg-accent/60 text-foreground"
+              exact-active-class="bg-primary/10 text-primary font-semibold"
+            >
+              About
+            </RouterLink>
+          </nav>
 
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
+          <!-- Actions -->
+          <div class="flex items-center gap-2">
+            <DropdownMenu>
+              <DropdownMenuTrigger as-child>
+                <Button variant="outline" size="sm">Account</Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" class="w-44">
+                <DropdownMenuItem>Profile</DropdownMenuItem>
+                <DropdownMenuItem>Settings</DropdownMenuItem>
+                <DropdownMenuItem>Sign out</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <Button size="sm">New Note</Button>
+          </div>
+        </div>
+        <Separator />
+      </div>
+    </header>
 
-  <RouterView />
+    <!-- Main (flex-1 keeps footer at bottom) -->
+    <main class="container mx-auto px-4 py-6 flex-1">
+      <RouterView />
+    </main>
+
+    <!-- Footer (sticks to bottom) -->
+    <footer class="border-t">
+      <div class="container mx-auto px-4 py-6 text-sm text-muted-foreground">
+        © {{ new Date().getFullYear() }} smart-notes
+      </div>
+    </footer>
+  </div>
 </template>
-
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
-</style>
